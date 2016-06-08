@@ -50,16 +50,20 @@
         <paper-button raised id="searchBtn" class="btn btn-success" >Search transportation</paper-button>
       </div>
 
-      <main class="timeTable">
+      <main class="table">
         <h5>Departure station: <span id="departure_station"></span></h5>
 
         <h5>Arrival station: <span id="arrival_station"></span></h5>
 
 
-        <table id="timeTable" style="width:100%">
-          <th>
-            <td>Train </td><td>Dep time </td><td>Arr time </td><td>Duration </td>
-          </th>
+        <table  style="width:100%">
+          <thead>
+            <tr>
+              <th>Train </th><th>Dep time </th><th>Arr time </th><th>Duration </th>
+            </tr>
+          </thead>
+          <tbody id="timeTable">
+          </tbody>
         </table>
 
       </main>
