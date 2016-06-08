@@ -10,12 +10,13 @@ var dbPromise = idb.open('caltrain', 1, function(upgradeDb) {
 		var stationStore = upgradeDb.createObjectStore('station', {
 			keyPath: 'stop_id'
 		});
-		stationStore.createIndex('station', 'stop_name');
+		stationStore.createIndex('by_stations', 'stop_name');
 
-		// var timeTableStore = upgradeDb.createObjectStore('timeTable', {
-		// 	keyPath: ''
-		// });
-		// timeTableStore.createIndex('timeTable', '');
+		var timeTableStore = upgradeDb.createObjectStore('timeTable', {
+			keyPath: 'trip'
+		});
+		timeTableStore.createIndex('by_trip', 'trip_id');
+		timeTableStore.createIndex('by_stations', 'stop_id');
 
 	}
 });
@@ -47,7 +48,7 @@ repository.showStations = function() {
 	dbPromise.then(function(db){
 		if (!db) return;
 
-		var stationData = db.transaction('station').objectStore('station').index('stations');
+		var stationData = db.transaction('station').objectStore('station').index('by_stations');
 		var datalist = document.getElementById('stations');
 
 
@@ -55,7 +56,7 @@ repository.showStations = function() {
 			var stationOld = '';
 			stations.forEach(function(station) {
 				var stationNew = station.stop_name;
-				if (stationOld !== stationNew) {
+				if (stationOld !== stationNew) { //disregard duplicate stations
 
 					var option = document.createElement('option');
 					option.value = station.stop_name;
@@ -69,6 +70,27 @@ repository.showStations = function() {
 	});
 }
 
+// populate tthe timeTable with data from stop-times.txt
+repository.storeTimetable = function(data) {
+	dbPromise.then(function(db) {
+		if (!db) return;
+
+		var tx = db.transaction('timeTable', 'readwrite');
+		var store = tx.objectStore('timeTable');
+
+		data.forEach(function(trip) {
+			store.put({
+				trip: (trip.trip_id + trip.stop_sequence),
+				trip_id: trip.trip_id,
+				arrival_time: trip.arrival_time,
+				departure_time: trip.departure_time,
+				stop_id: trip.stop_id,
+				stop_sequence: trip.stop_sequence
+			});
+		})
+
+	})
+}
 
 export default repository;
 

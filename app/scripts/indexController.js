@@ -11,6 +11,10 @@ function loadDatabase() {
 		repository.storeStations(data);
 	});
 
+	parseCsv('../trainSchedule_GTFS/stop_times.txt', function(data) {
+		repository.storeTimetable(data);
+	});
+
 	function parseCsv(url, callback){
 		Papa.parse(url, {
 			delimiter: ",",
