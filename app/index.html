@@ -41,21 +41,31 @@
       </div>
 
       <div class="jumbotron">
-        <paper-input type="text" label="Where do you want to start?" required auto-validate autocomplete="on" error-message="Departure station" list="stations" name="stations" multiple></paper-input>
+        <paper-input type="text" label="Where do you want to start?" required auto-validate autocomplete="on" error-message="Departure station" list="stations" name="stations" multiple autofocus id="departureStation"></paper-input>
 
-        <paper-input type="text" label="Where do you want to end?" required auto-validate autocomplete="on" error-message="Arrival station" list="stations" name="stations" multiple></paper-input>
+        <paper-input type="text" label="Where do you want to end?" required auto-validate autocomplete="on" error-message="Arrival station" list="stations" name="stations" multiple id="arrivalStation"></paper-input>
 
          <datalist id="stations"></datalist>
 
-        <paper-button raised class="btn btn-success" >Search transportation</paper-button>
+        <paper-button raised id="searchBtn" class="btn btn-success" >Search transportation</paper-button>
       </div>
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-       <input type="file" multiple onchange="processSelectedFiles(this)">
+      <main class="timeTable">
+        <h5>Departure station: <span id="departure_station"></span></h5>
 
-        </div>
-      </div>
+        <h5>Arrival station: <span id="arrival_station"></span></h5>
+
+
+        <table id="timeTable" style="width:100%">
+          <th>
+            <td>Train </td><td>Dep time </td><td>Arr time </td><td>Duration </td>
+          </th>
+        </table>
+
+      </main>
+
+
+
 
       <div class="footer">
         <p>♥</p>

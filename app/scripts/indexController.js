@@ -27,19 +27,33 @@ function loadDatabase() {
 	};
 }
 
-repository.showStations();
+// to create a datalist with stations to be selected by the user input
+repository.getStations(function(stations) {
+	var datalist = document.getElementById('stations');
+	var stationOld = '';
+	stations.forEach(function(station) {
+		var stationNew = station.stop_name;
+		if (stationOld !== stationNew) { //disregard duplicate stations
 
-	function registerSW() {
-	  if (!navigator.serviceWorker) return;
+			var option = document.createElement('option');
+			option.value = station.stop_name;
+			datalist.appendChild(option);
+			stationOld = station.stop_name;
+		}
+	})
+});
 
-	  var indexController = this;
+function registerSW() {
+  if (!navigator.serviceWorker) return;
 
-	  navigator.serviceWorker.register('scripts/sw/index.js').then(function() {
-	  	console.log('registered a new service worker');
-	  }).catch(function() {
-	  	console.log('not registered')
-	  });
-	}
+  var indexController = this;
+
+  navigator.serviceWorker.register('scripts/sw/index.js').then(function() {
+  	console.log('registered a new service worker');
+  }).catch(function() {
+  	console.log('not registered')
+  });
+}
 
 
 

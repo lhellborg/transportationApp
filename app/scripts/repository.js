@@ -16,7 +16,7 @@ var dbPromise = idb.open('caltrain', 1, function(upgradeDb) {
 			keyPath: 'trip'
 		});
 		timeTableStore.createIndex('by_trip', 'trip_id');
-		timeTableStore.createIndex('by_stations', 'stop_id');
+		timeTableStore.createIndex('by_stations', 'station');
 
 	}
 });
@@ -42,54 +42,63 @@ repository.storeStations = function(data) {
 	});
 }
 
-// to create a datalist with stations to be selected by the user input
-repository.showStations = function() {
+// to get all items in 'station' idb
+repository.getStations = function(callback) {
 
 	dbPromise.then(function(db){
 		if (!db) return;
 
 		var stationData = db.transaction('station').objectStore('station').index('by_stations');
-		var datalist = document.getElementById('stations');
 
-
-		return stationData.getAll().then(function(stations) {
-			var stationOld = '';
-			stations.forEach(function(station) {
-				var stationNew = station.stop_name;
-				if (stationOld !== stationNew) { //disregard duplicate stations
-
-					var option = document.createElement('option');
-					option.value = station.stop_name;
-					datalist.appendChild(option);
-					stationOld = station.stop_name;
-				}
-			})
-		})
-
+		return stationData.getAll().then(callback);
 
 	});
 }
 
-// populate tthe timeTable with data from stop-times.txt
-repository.storeTimetable = function(data) {
+// lookup departure stations
+repository.getTimedata = function(callback) {
 	dbPromise.then(function(db) {
 		if (!db) return;
 
-		var tx = db.transaction('timeTable', 'readwrite');
-		var store = tx.objectStore('timeTable');
+	 	var timeData = db.transaction('timeTable', 'readwrite').objectStore('timeTable').index('by_stations');
 
-		data.forEach(function(trip) {
-			store.put({
-				trip: (trip.trip_id + trip.stop_sequence),
-				trip_id: trip.trip_id,
-				arrival_time: trip.arrival_time,
-				departure_time: trip.departure_time,
-				stop_id: trip.stop_id,
-				stop_sequence: trip.stop_sequence
-			});
+	 	return timeData.getAll().then(callback);
+	})
+}
+
+// populate the timeTable with data from stop-times.txt and with the name of hte station
+repository.storeTimetable = function(data) {
+
+	repository.getStations(function(stations) {
+		// make an object with a stopID and stopName pair
+		var stationNamesById = {};
+		stations.forEach(function(station) {
+			stationNamesById[station.stop_id] = station.stop_name;
+		})
+
+		dbPromise.then(function(db) {
+			if (!db) return;
+
+			var tx = db.transaction('timeTable', 'readwrite');
+			var store = tx.objectStore('timeTable');
+
+			data.forEach(function(trip) {
+				var stationName = stationNamesById[trip.stop_id]; //add the name of the station
+				store.put({
+					trip: (trip.trip_id + trip.stop_sequence),
+					trip_id: trip.trip_id,
+					arrival_time: trip.arrival_time,
+					departure_time: trip.departure_time,
+					stop_id: trip.stop_id,
+					station: stationName,
+					stop_sequence: trip.stop_sequence
+				});
+			})
+
 		})
 
 	})
+
 }
 
 export default repository;
