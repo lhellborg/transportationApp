@@ -1,8 +1,5 @@
 $icon-font-path: '../fonts/';
 
-// bower:scss
-@import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-// endbower
 
 .browserupgrade {
   margin: 0.2em 0;
@@ -38,6 +35,8 @@ body {
     padding-bottom: 10px;
     padding-top: 10px;
     text-align: center;
+    color: #777777;
+    font-size: 24px;
   }
 }
 
@@ -58,8 +57,15 @@ body {
   border-bottom: 1px solid #e5e5e5;
   padding-top: 0px;
   padding-bottom: 0px;
+  border-radius: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 30px;
+  color: inherit;
+  background-color: #eeeeee;
   .btn {
     margin-top: 20px;
+    background-color: honeydew;
   }
 }
 
