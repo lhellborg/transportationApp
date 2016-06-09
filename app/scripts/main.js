@@ -12,7 +12,7 @@ $( "#departureStation" ).focusout(function() {
     $( "#departure_station" ).text(depStation);
 
     repository.getTimedata(function(times) {
-		console.log(times);
+		// console.log(times);
 		depStationTime = {} //empty the object
 		times.forEach(function(time) {
 			if (depStation === time.station) {
@@ -28,7 +28,7 @@ $( "#arrivalStation" ).focusout(function() {
 	$( "#arrival_station" ).text(arrStation);
 
 	repository.getTimedata(function(times) {
-		console.log(times);
+		// console.log(times);
 		arrStationTime = {} //empty the object
 		times.forEach(function(time) {
 			if (arrStation === time.station) {

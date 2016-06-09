@@ -1,12 +1,8 @@
 
 import repository from './repository.js'
 
-
+// load database with default train schedule
 function loadDatabase() {
-
-	var stops = [];
-
-
 	parseCsv('../trainSchedule_GTFS/stops.txt', function(data) {
 		repository.storeStations(data);
 	});
@@ -15,6 +11,7 @@ function loadDatabase() {
 		repository.storeTimetable(data);
 	});
 
+// read csv files and transform them to json
 	function parseCsv(url, callback){
 		Papa.parse(url, {
 			delimiter: ",",
@@ -43,15 +40,18 @@ repository.getStations(function(stations) {
 	})
 });
 
+// register a service worker
 function registerSW() {
   if (!navigator.serviceWorker) return;
 
   var indexController = this;
 
-  navigator.serviceWorker.register('scripts/sw/index.js').then(function() {
-  	console.log('registered a new service worker');
+  navigator.serviceWorker.register('/serWor.js', {
+  	scope: '/'
+  }).then(function(registration) {
+  	console.log('registered a service worker with scope: ', registration.scope);
   }).catch(function() {
-  	console.log('not registered')
+  	console.log('serviceWorker not registered')
   });
 }
 
