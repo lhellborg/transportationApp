@@ -1,15 +1,15 @@
 # Transport service app
 
-A responsive and user friendly app where you can search for a timetable between a departure station and an arrival station by the drop down menu. Once loaded online it can be used in an offline setting with the use of serviceWorker that saves the required data in the cache. The default trainschedule is downloaded from the `http://www.caltrain.com/developer.html` and saved in indexed database.
+A responsive and user friendly app where you can search for a timetable between a departure station and an arrival station. Once loaded online it can be used in an offline setting with the use of serviceWorker that saves the required data in the cache. The default trainschedule is downloaded from the `http://www.caltrain.com/developer.html` site and the relevant data is saved in indexed database.
 
 It uses jquery, polymer packages, serviceWorker and indexdb. It is build from yeoman web apps template using gulp.
 
 ##How to use
-The autofocus is set on the departure station when loading the page. Type a first letter or click the down-arrow to get the available trainstations to search from. When leaving the field an object will be populated with all the trips from that station. 
+The autofocus is set on the departure station when loading the page. Type a first letter or click the down-arrow to get the available train stations to search from. When leaving the field a data object will be populated with all the trips from that station. 
 
-Select an arrival station in the same way and another object will be populated with all its trips. 
+Select an arrival station in the same way and another data object will be populated with all its trips. 
 
-The two objects with the trips, will be compared and trips that bind the two staions together in the correct direction will be shown when clicking the `SEARCH TRANSPORTATION` button. The train number with the departure time and arrival time and the duration of the trip will be shown.
+The two objects with the trips, will be compared and trips that bind the two stations together in the correct direction will be shown when clicking the `SEARCH TRANSPORTATION` button. All available trips with the departure and arrival time and the duration of the trip, will be shown.
 
 
 
