@@ -49,6 +49,14 @@ function registerSW() {
   navigator.serviceWorker.register('/serWor.js', {
   	scope: '/'
   }).then(function(registration) {
+  	if (!navigator.serviceWorker.controller) {
+  		return; //no service worker
+  	}
+
+  	if (registration.waiting) {
+  		registration.waiting.postMessage({action: 'skipWaiting'}); //all updates should go out directly
+  		console.log('service worker waiting')
+  	}
   	console.log('registered a service worker with scope: ', registration.scope);
   }).catch(function() {
   	console.log('serviceWorker not registered')

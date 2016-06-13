@@ -1,4 +1,4 @@
-var staticCacheName = 'transportStatic-v23'
+var staticCacheName = 'transportStatic-v32'
 
 self.addEventListener('install', function(event) {
 	// save the scripts and styles needed for the page in cache cvc
@@ -45,4 +45,11 @@ self.addEventListener('fetch', function(event) {
   		return fetch(event.request);
   	})
   );
+});
+
+self.addEventListener('message', function(event) {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+    console.log('waiting worker installed')
+  }
 });
