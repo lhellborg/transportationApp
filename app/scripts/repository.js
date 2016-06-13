@@ -1,16 +1,21 @@
+//the code for dealing eith indexed db
 import idb from 'idb';
 
 var dbPromise = idb.open('caltrain', 1, function(upgradeDb) {
 	if(upgradeDb.oldVersion === 0) {
 
 		// create a database called "caltrain" with an objectStore: "station"
-		// that uses stop-id as its key and has an index called "stations"
+		// that uses stop-id as its key and has an index called "by_stations"
 		// which is sorted by the "stop-name"
 
 		var stationStore = upgradeDb.createObjectStore('station', {
 			keyPath: 'stop_id'
 		});
 		stationStore.createIndex('by_stations', 'stop_name');
+
+		// create another objectStore: "timeTable"
+		// that uses trip as its key and has an index called "by_trip" which is sorted by the "trip_id"
+		//and one index "by_stations" which is sorted on the "station"
 
 		var timeTableStore = upgradeDb.createObjectStore('timeTable', {
 			keyPath: 'trip'
@@ -55,29 +60,19 @@ repository.getStations = function(callback) {
 	});
 }
 
-// lookup departure stations
-repository.getTimedata = function(callback) {
+// lookup selected stations
+repository.getTimedata = function(station, callback) {
+	var keyRangeValue = IDBKeyRange.only(station); //search only the selected stations
 	dbPromise.then(function(db) {
 		if (!db) return;
 
-	 	var timeData = db.transaction('timeTable', 'readwrite').objectStore('timeTable').index('by_stations');
-	 	return timeData.getAll().then(callback);
+	 	var timeData = db.transaction('timeTable', 'readonly').objectStore('timeTable').index('by_stations');
+
+	 	return timeData.openCursor(keyRangeValue).then(callback);
 	})
 }
 
-// // lookup departure stations
-// repository.getTimedata = function(depStation, callback) {
-// 	var keyRangeValue = IDBKeyRange.only(depStation);
-// 	dbPromise.then(function(db) {
-// 		if (!db) return;
-
-// 	 	var timeData = db.transaction('timeTable', 'readwrite').objectStore('timeTable').index('by_stations');
-
-// 	 	return timeData.openCursor(keyRangeValue).then(callback);
-// 	})
-// }
-
-// populate the timeTable with data from stop-times.txt and with the name of hte station
+// populate the timeTable with data from stop-times.txt and with the name of the station
 repository.storeTimetable = function(data) {
 
 	repository.getStations(function(stations) {

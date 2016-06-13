@@ -48,6 +48,8 @@
   },
   "dependencies": {
     "idb": "^1.1.1",
+    "jszip": "^3.0.0",
+    "jszip-utils": "0.0.2",
     "underscore": "^1.8.3"
   }
 }

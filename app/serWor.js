@@ -1,7 +1,9 @@
-var staticCacheName = 'transportStatic-v32'
+//the serviceWorker
+
+var staticCacheName = 'transportStatic-v1'
 
 self.addEventListener('install', function(event) {
-	// save the scripts and styles needed for the page in cache cvc
+	// save the scripts and styles needed for the page in cache
 	event.waitUntil(
 		caches.open(staticCacheName).then(function(cache) {
 			return cache.addAll([
@@ -47,6 +49,8 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
+
+// listen for a waiting service worker to install
 self.addEventListener('message', function(event) {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
