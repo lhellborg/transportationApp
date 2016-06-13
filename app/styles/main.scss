@@ -77,6 +77,11 @@ body {
   }
 }
 
+.picture {
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {

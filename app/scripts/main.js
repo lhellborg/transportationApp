@@ -11,9 +11,9 @@ $( "#departureStation" ).focusout(function() {
     var depStation = $(this).val();
     $( "#departure_station" ).text(depStation);
 
-    repository.getTimedata(function(times) {
+  	repository.getTimedata(function(times) {
 		// console.log(times);
-		depStationTime = {} //empty the object
+		arrStationTime = {} //empty the object
 		times.forEach(function(time) {
 			if (depStation === time.station) {
 				depStationTime[time.trip_id] = time.departure_time;
@@ -21,6 +21,15 @@ $( "#departureStation" ).focusout(function() {
 		})
 	})
 
+  //   repository.getTimedata(depStation, function(event) {
+  //   	arrStationTime = {} //empty the object
+  //   	console.log(event)
+ 	// 	var cursor = event.target.result;
+  //   	if(cursor) {
+ 	// 		depStationTime[cursor.value.trip_id] = cursor.value.departure_time;
+  //   	cursor.continue();
+  //    	}
+ 	// });
 });
 
 $( "#arrivalStation" ).focusout(function() {

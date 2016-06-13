@@ -61,10 +61,21 @@ repository.getTimedata = function(callback) {
 		if (!db) return;
 
 	 	var timeData = db.transaction('timeTable', 'readwrite').objectStore('timeTable').index('by_stations');
-
 	 	return timeData.getAll().then(callback);
 	})
 }
+
+// // lookup departure stations
+// repository.getTimedata = function(depStation, callback) {
+// 	var keyRangeValue = IDBKeyRange.only(depStation);
+// 	dbPromise.then(function(db) {
+// 		if (!db) return;
+
+// 	 	var timeData = db.transaction('timeTable', 'readwrite').objectStore('timeTable').index('by_stations');
+
+// 	 	return timeData.openCursor(keyRangeValue).then(callback);
+// 	})
+// }
 
 // populate the timeTable with data from stop-times.txt and with the name of hte station
 repository.storeTimetable = function(data) {

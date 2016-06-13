@@ -1,4 +1,4 @@
-var staticCacheName = 'transportStatic-v12'
+var staticCacheName = 'transportStatic-v23'
 
 self.addEventListener('install', function(event) {
 	// save the scripts and styles needed for the page in cache cvc
@@ -6,6 +6,7 @@ self.addEventListener('install', function(event) {
 		caches.open(staticCacheName).then(function(cache) {
 			return cache.addAll([
 				'/',
+				'images/caltrainMap.png',
 				'scripts/app.js',
 				'scripts/papaparse.js',
 				'scripts/repository.js',
@@ -40,7 +41,6 @@ self.addEventListener('fetch', function(event) {
 	// return with chached item if there is any otherwise take them from network
   event.respondWith(
   	caches.match(event.request).then(function(response) {
-  		console.log(response)
   		if (response) return response;
   		return fetch(event.request);
   	})
