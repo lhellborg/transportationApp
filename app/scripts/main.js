@@ -8,7 +8,7 @@ var depStationTime = {}; //an empty object to be filled with the chosen trips id
 var arrStationTime = {}; //an empty object to be filled with the chosen trips ids and times for the arrival station
 
 //the value of the chosen departure station collected when leaving the field
-$("#departureStation").focusout(function() {
+$("#departureStation").keyup(function() {
     var depStation = $(this).val();
     $("#departure_station").text(depStation);
 
@@ -24,7 +24,7 @@ $("#departureStation").focusout(function() {
 });
 
 //the value of the chosen departure station collected when leaving the field
-$("#arrivalStation").focusout(function() {
+$("#arrivalStation").keyup(function() {
     var arrStation = $(this).val();
     $("#arrival_station").text(arrStation);
 
